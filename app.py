@@ -24,11 +24,28 @@ movies_dict = pickle.load(open('movies_dict.pkl', 'rb'))
 similarity = pickle.load(open('similarity.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
 
-st.title("Movie Recommendation System")
-selected_movie_name = st.selectbox("Select an option", movies['title'].values)
-if st.button("Recommend"):
-    names,posters = recommend(selected_movie_name)
+background_image = """
+<style>
+[data-testid="stAppViewContainer"] > .main {
+    background-image: url("https://res.cloudinary.com/dlsakk1pf/image/upload/v1713611574/image_vedwte.jpg");
+    background-size: 100vw 100vh;  # This sets the size to cover 100% of the viewport width and height
+    background-position: center;  
+    background-repeat: no-repeat;
+}
+</style>
+"""
+st.markdown(background_image, unsafe_allow_html=True)
 
+st.title("Movie Recommendation System")
+
+selected_movie_name = st.selectbox("Select a movie", movies['title'].values)
+if st.button("Recommend"):
+    names, posters = recommend(selected_movie_name)
+
+    st.markdown(
+        "<p style='text-align: center; color: #ffffff; font-size: 24px; margin-bottom: 10px;'>Top picks for you</p>",
+        unsafe_allow_html=True
+    )
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.text(names[0])
@@ -45,3 +62,4 @@ if st.button("Recommend"):
     with col5:
         st.text(names[4])
         st.image(posters[4])
+
